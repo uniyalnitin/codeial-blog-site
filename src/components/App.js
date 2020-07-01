@@ -1,11 +1,21 @@
-import React from "react";
+import React, { Component } from 'react';
+import { fetchPosts } from '../actions/posts';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchPosts());
+  }
+
+  render() {
+    return <div>App</div>;
+  }
 }
 
-export default App;
+function mapPropsToState(state) {
+  return {
+    posts: state.posts,
+  };
+}
+
+export default connect(mapPropsToState)(App);
