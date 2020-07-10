@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { fetchPosts } from '../actions/posts';
 import { connect } from 'react-redux';
-import { PostsList, Navbar } from './';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { Navbar, Home, Page404 } from './';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Home = () => <div>Home</div>
+const Login = () => <div>Login</div>;
 
-const Login = () => <div>Login</div>
-
-const SignUp = () => <div>SignUp</div>
+const SignUp = () => <div>SignUp</div>;
 
 class App extends Component {
   componentDidMount() {
@@ -20,24 +18,21 @@ class App extends Component {
     const { posts } = this.props;
     return (
       <Router>
-      <div>
-        <Navbar />
-        {/* <PostsList posts={posts} /> */}
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/signup">Sign Up</Link>
-          </li>
-        </ul>
-        <Route exact path="/" component={Home}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/signup" component={SignUp} />
-      </div>
+        <div>
+          <Navbar />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={(props) => {
+                return <Home posts={posts} />;
+              }}
+            />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={SignUp} />
+            <Route component={Page404} />
+          </Switch>
+        </div>
       </Router>
     );
   }
