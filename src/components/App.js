@@ -4,10 +4,17 @@ import { connect } from 'react-redux';
 import { Navbar, Home, Page404, Login, SignUp } from './';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import * as jwtDecode from 'jwt-decode';
 
 class App extends Component {
   componentDidMount() {
     this.props.dispatch(fetchPosts());
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const user = jwtDecode(token);
+      console.log('user', user);
+    }
   }
 
   render() {
