@@ -1,6 +1,13 @@
 import { APIUrls } from '../helpers/urls';
 import { getFormBody } from '../helpers/utils';
-import { LOGIN_START, LOGIN_FAILED, LOGIN_SUCCESS } from './actionTypes';
+import {
+  LOGIN_START,
+  LOGIN_FAILED,
+  LOGIN_SUCCESS,
+  SIGNUP_START,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILED,
+} from './actionTypes';
 
 export function startLogin() {
   return {
@@ -39,6 +46,55 @@ export function login(email, password) {
           return;
         }
         dispatch(loginFailed());
+      });
+  };
+}
+
+export function signupStart() {
+  return {
+    type: SIGNUP_START,
+  };
+}
+
+export function signupSuccesful(user) {
+  return {
+    type: SIGNUP_SUCCESS,
+    user: user,
+  };
+}
+
+export function signupFailed(error) {
+  return {
+    type: SIGNUP_FAILED,
+    error,
+  };
+}
+
+export function signup(name, email, password, confirmPassword) {
+  return (dispatch) => {
+    dispatch(signupStart());
+    const url = APIUrls.signup();
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: getFormBody({
+        name,
+        email,
+        password,
+        confirm_password: confirmPassword,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          localStorage.setItem('token', data.data.token);
+          dispatch(signupSuccesful(data.data.user));
+          return;
+        }
+        dispatch(signupFailed(data.message));
       });
   };
 }
