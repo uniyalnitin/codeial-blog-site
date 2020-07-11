@@ -5,6 +5,8 @@ const {
   LOGIN_START,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
+  AUTHENTICATE_USER,
+  LOG_OUT,
 } = require('../actions/actionTypes');
 
 const initialAuthState = {
@@ -29,6 +31,7 @@ export default function auth(state = initialAuthState, action) {
         ...state,
         isLoggedIn: true,
         inProgress: false,
+        user: action.user,
         error: null,
       };
     case LOGIN_FAILED:
@@ -38,6 +41,18 @@ export default function auth(state = initialAuthState, action) {
         isLoggedIn: false,
         inProgress: false,
         error: action.error,
+      };
+    case AUTHENTICATE_USER:
+      return {
+        ...state,
+        user: action.user,
+        isLoggedIn: true,
+      };
+    case LOG_OUT:
+      return {
+        ...state,
+        user: {},
+        isLoggedIn: false,
       };
     default:
       return state;

@@ -7,6 +7,8 @@ import {
   SIGNUP_START,
   SIGNUP_SUCCESS,
   SIGNUP_FAILED,
+  AUTHENTICATE_USER,
+  LOG_OUT,
 } from './actionTypes';
 
 export function startLogin() {
@@ -15,9 +17,10 @@ export function startLogin() {
   };
 }
 
-export function loginFailed() {
+export function loginFailed(error) {
   return {
     type: LOGIN_FAILED,
+    error,
   };
 }
 
@@ -42,10 +45,11 @@ export function login(email, password) {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
+          localStorage.setItem('token', data.data.token);
           dispatch(loginSuccess(data.data.user));
           return;
         }
-        dispatch(loginFailed());
+        dispatch(loginFailed(data.message));
       });
   };
 }
@@ -96,5 +100,18 @@ export function signup(name, email, password, confirmPassword) {
         }
         dispatch(signupFailed(data.message));
       });
+  };
+}
+
+export function authenticateUser(user) {
+  return {
+    type: AUTHENTICATE_USER,
+    user,
+  };
+}
+
+export function logoutUser() {
+  return {
+    type: LOG_OUT,
   };
 }
