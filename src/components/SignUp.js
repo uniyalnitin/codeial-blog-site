@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signup, clearAuthState } from '../actions/auth';
+import { Redirect } from 'react-router-dom';
 
 class SignUp extends Component {
   constructor(props) {
@@ -49,7 +50,10 @@ class SignUp extends Component {
     }
   };
   render() {
-    const { error, inProgress } = this.props.auth;
+    const { error, inProgress, isLoggedIn } = this.props.auth;
+    if (isLoggedIn) {
+      return <Redirect to="/" />;
+    }
     return (
       <form className="login-form">
         {error && <div className="alert error-dailog">{error}</div>}
