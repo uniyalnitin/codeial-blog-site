@@ -12,6 +12,9 @@ class Profile extends Component {
     this.state = {
       success: null,
       error: null,
+      successMessage: null,
+      errorMessage: null,
+      inProgress: false,
     };
   }
   componentDidMount() {
@@ -31,6 +34,9 @@ class Profile extends Component {
   };
 
   handleAddFriend = async () => {
+    this.setState({
+      inProgress: true,
+    });
     const { friends, match } = this.props;
     const userId = match.params.userId;
     const url = APIUrls.addFriend(userId);
@@ -49,18 +55,28 @@ class Profile extends Component {
     if (data.success) {
       this.setState({
         success: true,
+        inProgress: false,
+        successMessage: 'Friend Added Successfully',
+        error: false,
+        errorMessage: null,
       });
 
       this.props.dispatch(addFriend(data.data.friendship));
     } else {
       this.setState({
         success: false,
-        error: data.message,
+        error: true,
+        errorMessage: data.messsage,
+        inProgress: false,
       });
     }
   };
 
   handleRemoveFriend = async () => {
+    this.setState({
+      inProgress: true,
+    });
+
     const userId = this.props.match.params.userId;
     const url = APIUrls.removeFriend(userId);
 
@@ -77,15 +93,19 @@ class Profile extends Component {
 
     if (data.success) {
       this.setState({
-        success: false,
-        error: data.message,
+        success: true,
+        successMessage: data.message,
+        error: false,
+        inProgress: false,
       });
 
       this.props.dispatch(removeFriend(userId));
     } else {
       this.setState({
         success: false,
-        error: data.message,
+        error: true,
+        errorMessage: data.message,
+        inProgress: false,
       });
     }
   };
@@ -106,9 +126,15 @@ class Profile extends Component {
     }
 
     const isUserAFriend = this.checkIfUserIsAFriend();
-    console.log('isUserAFriend', isUserAFriend);
 
-    const { success, error } = this.state;
+    const {
+      success,
+      error,
+      successMessage,
+      inProgress,
+      errorMessage,
+    } = this.state;
+
     return (
       <div className="settings">
         <div className="img-container">
@@ -128,7 +154,11 @@ class Profile extends Component {
         </div>
         {!isUserAFriend ? (
           <div className="btn-grp">
-            <button className="button save-btn" onClick={this.handleAddFriend}>
+            <button
+              className="button save-btn"
+              onClick={this.handleAddFriend}
+              disabled={inProgress==true}
+            >
               Add Friend
             </button>
           </div>
@@ -137,6 +167,7 @@ class Profile extends Component {
             <button
               className="button remove-btn"
               onClick={this.handleRemoveFriend}
+              disabled={inProgress==true}
             >
               Remove Friend
             </button>
@@ -144,9 +175,9 @@ class Profile extends Component {
         )}
 
         {success && (
-          <div className="alert success-dailog">Friend Added Successfully</div>
+          <div className="alert success-dailog">{successMessage}</div>
         )}
-        {error && <div className="alert error-dailog">{error}</div>}
+        {error && <div className="alert error-dailog">{errorMessage}</div>}
       </div>
     );
   }
