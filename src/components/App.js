@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { fetchPosts } from '../actions/posts';
 import { connect } from 'react-redux';
-import { Navbar, Home, Page404, Login, SignUp } from './';
+import { Navbar, Home, Page404, Login, SignUp, Settings } from './';
 import {
   BrowserRouter as Router,
   Route,
@@ -11,8 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import * as jwtDecode from 'jwt-decode';
 import { authenticateUser } from '../actions/auth';
-
-const Settings = () => <div>Settings</div>;
 
 const PrivateRoute = (privateRouteProps) => {
   const { isLoggedIn, path, component: Component } = privateRouteProps;
