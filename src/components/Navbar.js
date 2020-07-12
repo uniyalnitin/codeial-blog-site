@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../actions/auth';
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-  }
   logOut = () => {
     localStorage.removeItem('token');
     this.props.dispatch(logoutUser());
