@@ -2,6 +2,7 @@ import {
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDS_FAILED,
   ADD_FRIEND,
+  REMOVE_FRIEND,
 } from '../actions/actionTypes';
 
 const defaultProfileState = [];
@@ -14,6 +15,8 @@ export default function friends(state = defaultProfileState, action) {
       return state;
     case ADD_FRIEND:
       return state.concat(action.friend);
+    case REMOVE_FRIEND:
+      return state.filter((friend) => friend.to_user._id != action.friendId);
     default:
       return state;
   }

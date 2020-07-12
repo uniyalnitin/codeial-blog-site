@@ -3,6 +3,7 @@ import {
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDS_FAILED,
   ADD_FRIEND,
+  REMOVE_FRIEND,
 } from './actionTypes';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
@@ -45,5 +46,12 @@ export function addFriend(friendship) {
   return {
     type: ADD_FRIEND,
     friend: friendship,
+  };
+}
+
+export function removeFriend(userId) {
+  return {
+    type: REMOVE_FRIEND,
+    friendId: userId,
   };
 }

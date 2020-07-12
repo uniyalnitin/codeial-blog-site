@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchUserProfile } from '../actions/profile';
 import { APIUrls } from '../helpers/urls';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
-import { addFriend } from '../actions/friends';
+import { addFriend, removeFriend } from '../actions/friends';
 
 class Profile extends Component {
   constructor(props) {
@@ -60,6 +60,36 @@ class Profile extends Component {
     }
   };
 
+  handleRemoveFriend = async () => {
+    const userId = this.props.match.params.userId;
+    const url = APIUrls.removeFriend(userId);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
+      },
+    };
+
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (data.success) {
+      this.setState({
+        success: false,
+        error: data.message,
+      });
+
+      this.props.dispatch(removeFriend(userId));
+    } else {
+      this.setState({
+        success: false,
+        error: data.message,
+      });
+    }
+  };
+
   render() {
     const {
       match: { params },
@@ -104,7 +134,12 @@ class Profile extends Component {
           </div>
         ) : (
           <div className="btn-grp">
-            <button className="button remove-btn">Remove Friend</button>
+            <button
+              className="button remove-btn"
+              onClick={this.handleRemoveFriend}
+            >
+              Remove Friend
+            </button>
           </div>
         )}
 
