@@ -1,5 +1,9 @@
 import { APIUrls } from '../helpers/urls';
-import { FETCH_FRIENDS_SUCCESS, FETCH_FRIENDS_FAILED } from './actionTypes';
+import {
+  FETCH_FRIENDS_SUCCESS,
+  FETCH_FRIENDS_FAILED,
+  ADD_FRIEND,
+} from './actionTypes';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 export function fetchUserFriends(userId) {
@@ -34,5 +38,12 @@ export function fetchFriendsError(error) {
   return {
     type: FETCH_FRIENDS_FAILED,
     error,
+  };
+}
+
+export function addFriend(friendship) {
+  return {
+    type: ADD_FRIEND,
+    friend: friendship,
   };
 }
