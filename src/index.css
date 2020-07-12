@@ -455,6 +455,14 @@ nav .nav-links ul li:hover {
     border: none;
     padding: 10px 20px;
 }
+
+.settings .remove-btn {
+    background: #d8372b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+}
+
 .settings .go-back {
     color: #ef7917;
     margin-top: 7px;

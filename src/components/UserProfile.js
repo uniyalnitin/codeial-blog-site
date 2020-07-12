@@ -11,6 +11,14 @@ class Profile extends Component {
     }
   }
 
+  checkIfUserIsAFriend = () => {
+    const { friends, match } = this.props;
+
+    const userId = match.params.userId;
+    const index = friends.map((friend) => friend.to_user._id).indexOf(userId);
+    return index != -1;
+  };
+
   render() {
     const {
       match: { params },
@@ -25,6 +33,9 @@ class Profile extends Component {
         </div>
       );
     }
+
+    const isUserAFriend = this.checkIfUserIsAFriend();
+    console.log('isUserAFriend', isUserAFriend);
 
     return (
       <div className="settings">
@@ -43,9 +54,15 @@ class Profile extends Component {
           <div className="field-label">Name</div>
           <div className="field-value">{user.name}</div>
         </div>
-        <div className="btn-grp">
-          <button className="button save-btn">Add Friend</button>
-        </div>
+        {!isUserAFriend ? (
+          <div className="btn-grp">
+            <button className="button save-btn">Add Friend</button>
+          </div>
+        ) : (
+          <div className="btn-grp">
+            <button className="button remove-btn">Remove Friend</button>
+          </div>
+        )}
       </div>
     );
   }
@@ -53,6 +70,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     profile: state.profile,
+    friends: state.friends,
   };
 }
 
