@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { createPost } from '../actions/posts';
+import { connect } from 'react-redux';
 
 class CreatePost extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class CreatePost extends Component {
 
   handleOnClick = () => {
     //dispatch action to create post
+    this.props.dispatch(createPost(this.state.content));
   };
 
   handleChange = (e) => {
@@ -21,13 +24,9 @@ class CreatePost extends Component {
   render() {
     return (
       <div className="create-post">
-        <textarea
-          className="add-post"
-          value={this.state.content}
-          onChange={this.handleChange}
-        ></textarea>
+        <textarea value={this.state.content} onChange={this.handleChange} />
         <div>
-          <button id="#add-post-btn" onClick={this.handleOnClick}>
+          <button id="add-post-btn" onClick={this.handleOnClick}>
             Add Post
           </button>
         </div>
@@ -36,4 +35,5 @@ class CreatePost extends Component {
   }
 }
 
-export default CreatePost;
+// only dispatch will be passed as props
+export default connect()(CreatePost);
