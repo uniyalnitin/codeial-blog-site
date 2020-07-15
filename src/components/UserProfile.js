@@ -25,6 +25,20 @@ class Profile extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      match: { params: prevParams },
+    } = prevProps;
+
+    const {
+      match: { params: curParams },
+    } = this.props;
+
+    if (curParams && prevParams && prevParams.userId != curParams.userId) {
+      this.props.dispatch(fetchUserProfile(curParams.userId));
+    }
+  }
+
   checkIfUserIsAFriend = () => {
     const { friends, match } = this.props;
 
@@ -157,7 +171,7 @@ class Profile extends Component {
             <button
               className="button save-btn"
               onClick={this.handleAddFriend}
-              disabled={inProgress==true}
+              disabled={inProgress == true}
             >
               Add Friend
             </button>
@@ -167,7 +181,7 @@ class Profile extends Component {
             <button
               className="button remove-btn"
               onClick={this.handleRemoveFriend}
-              disabled={inProgress==true}
+              disabled={inProgress == true}
             >
               Remove Friend
             </button>
